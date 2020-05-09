@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, Suspense } from "react";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
+
+import Login from "./pages/auth/login";
+import Register from "./pages/auth/register/register";
+import Layout from "./components/layout/layout";
+
+function loading() {
+  return (
+    <Fragment>
+      <div
+        style={{
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        Loading...
+      </div>
+    </Fragment>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={loading()}>
+      <BrowserRouter>
+        <Switch>
+          <Route
+            exact={true}
+            path="/login"
+            name={"Login"}
+            render={(props) => <Login {...props} />}
+          />
+          <Route
+            exact={true}
+            path="/register"
+            name={"Register"}
+            render={(props) => <Register {...props} />}
+          />
+          <Route path={"/"} render={(props) => <Layout {...props} />} />
+        </Switch>
+      </BrowserRouter>
+    </Suspense>
   );
 }
 
