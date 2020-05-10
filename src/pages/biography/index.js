@@ -1,6 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import BiographySingleComponent from "./biography";
+import MarriageComponent from "./marriage";
+import ParentComponent from "./parent";
+import ChildrenComponent from "./children";
 
 const BiographyComponent = (props) => {
+  const [active, setActive] = useState("biography");
   return (
     <Fragment>
       <header className="bg-white shadow">
@@ -15,24 +20,39 @@ const BiographyComponent = (props) => {
           <div>
             <div className="sm:hidden">
               <select
+                  onChange={(e)=>setActive(e.target.value)}
                 aria-label="Selected tab"
                 className="form-select block w-full"
               >
-                <option>Biography</option>
-                <option>Marriage</option>
-                <option selected>Parent</option>
-                <option>Children</option>
+                <option value={"biography"}>Biography</option>
+                <option value={"marriage"}>Marriage</option>
+                <option value={"parent"}>Parent</option>
+                <option value={"children"}>Children</option>
               </select>
             </div>
             <div className="hidden sm:block">
               <div className="border-b border-gray-200">
                 <nav className="flex -mb-px">
-                  <a
-                    href="#"
-                    className="group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300"
+                  <button
+                    onClick={() => setActive("biography")}
+                    className={`ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm ${
+                      active === "biography" ? "border-purple-500" : ""
+                    } leading-5 text-${
+                      active === "biography" ? "purple" : "gray"
+                    }-500 hover:text-gray-700 hover:border-${
+                      active === "biography" ? "purple" : "gray"
+                    }-300 focus:outline-none focus:text-${
+                      active === "biography" ? "purple" : "gray"
+                    }-700 focus:border-${
+                      active === "biography" ? "purple" : "gray"
+                    }-300`}
                   >
                     <svg
-                      className="-ml-0.5 mr-2 h-5 w-5 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-600"
+                      className={`-ml-0.5 mr-2 h-5 w-5 text-${
+                        active === "biography" ? "purple" : "gray"
+                      }-500 group-focus:text-${
+                        active === "biography" ? "purple" : "gray"
+                      }-600`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -43,13 +63,27 @@ const BiographyComponent = (props) => {
                       />
                     </svg>
                     <span>Biography</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300"
+                  </button>
+                  <button
+                    onClick={() => setActive("marriage")}
+                    className={`ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm ${
+                      active === "marriage" ? "border-purple-500" : ""
+                    } leading-5 text-${
+                      active === "marriage" ? "purple" : "gray"
+                    }-500 hover:text-gray-700 hover:border-${
+                      active === "marriage" ? "purple" : "gray"
+                    }-300 focus:outline-none focus:text-${
+                      active === "marriage" ? "purple" : "gray"
+                    }-700 focus:border-${
+                      active === "marriage" ? "purple" : "gray"
+                    }-300`}
                   >
                     <svg
-                      className="-ml-0.5 mr-2 h-5 w-5 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-600"
+                      className={`-ml-0.5 mr-2 h-5 w-5 text-${
+                        active === "marriage" ? "purple" : "gray"
+                      }-500 group-focus:text-${
+                        active === "marriage" ? "purple" : "gray"
+                      }-600`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -60,37 +94,70 @@ const BiographyComponent = (props) => {
                       />
                     </svg>
                     <span>Marriage</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-indigo-500 font-medium text-sm leading-5 text-indigo-600 focus:outline-none focus:text-indigo-800 focus:border-indigo-700"
-                    aria-current="page"
+                  </button>
+                  <button
+                    onClick={() => setActive("parent")}
+                    className={`ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm ${
+                      active === "parent" ? "border-purple-500" : ""
+                    } leading-5 text-${
+                      active === "parent" ? "purple" : "gray"
+                    }-500 hover:text-gray-700 hover:border-${
+                      active === "parent" ? "purple" : "gray"
+                    }-300 focus:outline-none focus:text-${
+                      active === "parent" ? "purple" : "gray"
+                    }-700 focus:border-${
+                      active === "parent" ? "purple" : "gray"
+                    }-300`}
                   >
                     <svg
-                      className="-ml-0.5 mr-2 h-5 w-5 text-indigo-500 group-focus:text-indigo-600"
+                      className={`-ml-0.5 mr-2 h-5 w-5 text-${
+                        active === "parent" ? "purple" : "gray"
+                      }-500 group-focus:text-${
+                        active === "parent" ? "purple" : "gray"
+                      }-600`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
                       <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
                     </svg>
-                    <span>Parent</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300"
+                    <span>parent</span>
+                  </button>
+                  <button
+                    onClick={() => setActive("children")}
+                    className={`ml-8 group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm ${
+                      active === "children" ? "border-purple-500" : ""
+                    } leading-5 text-${
+                      active === "children" ? "purple" : "gray"
+                    }-500 hover:text-gray-700 hover:border-${
+                      active === "children" ? "purple" : "gray"
+                    }-300 focus:outline-none focus:text-${
+                      active === "children" ? "purple" : "gray"
+                    }-700 focus:border-${
+                      active === "children" ? "purple" : "gray"
+                    }-300`}
                   >
                     <svg
-                      className="-ml-0.5 mr-2 h-5 w-5 text-indigo-500 group-focus:text-indigo-600"
+                      className={`-ml-0.5 mr-2 h-5 w-5 text-${
+                        active === "children" ? "purple" : "gray"
+                      }-500 group-focus:text-${
+                        active === "children" ? "purple" : "gray"
+                      }-600`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
                       <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
                     </svg>
                     <span>Children</span>
-                  </a>
+                  </button>
                 </nav>
               </div>
             </div>
+          </div>
+          <div className={"mt-5"}>
+            {active === "biography" && <BiographySingleComponent />}
+            {active === "marriage" && <MarriageComponent />}
+            {active === "parent" && <ParentComponent />}
+            {active === "children" && <ChildrenComponent />}
           </div>
         </div>
       </main>
