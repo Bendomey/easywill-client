@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toaster } from "evergreen-ui";
 
-axios.defaults.baseURL = "https://kma-api.innoverex.com/"; //
+axios.defaults.baseURL = "https://us-central1-samansiwill.cloudfunctions.net/"; //
 
 const config = {
   headers: {},
@@ -31,7 +31,6 @@ const setToken = (config = {}) => {
   //     // alert("Bearer " + JSON.parse(token));
   //     config.headers["Authorization"] = `Bearer ${JSON.parse(token)}`;
   // }
-  config.headers["Access-Control-Allow-Origin"] = "*";
   config.headers["Accept"] = "application/json";
   config.headers["Content-Type"] = "application/json";
   return config;

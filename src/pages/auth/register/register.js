@@ -1,6 +1,54 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { v4 } from "uuid";
+import { toaster } from "evergreen-ui";
+import { post } from "../../../components/auth/transport";
+import { useHistory } from "react-router-dom";
 
 const RegisterComponent = (props) => {
+  const { push } = useHistory();
+
+  const [first, setFirst] = useState("");
+  const [other, setOther] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Register - Easywill";
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirm)
+      return toaster.warning("Error", {
+        description: "Passwords do not match",
+      });
+    let gen = v4();
+    try {
+      setLoading(true);
+      let results = await post("/addUserAuth", {
+        gen,
+        first,
+        other,
+        email,
+        password,
+        location,
+      });
+      localStorage.setItem("eaze-token", JSON.stringify(results.data.data));
+      push("/");
+      toaster.success("Hurray", {
+        description: "Your account was created successfully",
+      });
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+      toaster.warning("Error", {
+        description: e.message,
+      });
+    }
+  };
   return (
     <Fragment>
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -15,12 +63,14 @@ const RegisterComponent = (props) => {
               Register
             </h2>
           </div>
-          <form className="mt-8" action="#" method="POST">
+          <form className="mt-8" onSubmit={handleSubmit}>
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm">
               <div>
                 <input
                   type="text"
+                  value={first}
+                  onChange={(e) => setFirst(e.target.value)}
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Last Name"
@@ -29,6 +79,8 @@ const RegisterComponent = (props) => {
               <div className="-mt-px">
                 <input
                   type="text"
+                  value={other}
+                  onChange={(e) => setOther(e.target.value)}
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Other Names"
@@ -36,9 +88,21 @@ const RegisterComponent = (props) => {
               </div>
               <div className="-mt-px">
                 <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
+                  placeholder="Address"
+                />
+              </div>
+              <div className="-mt-px">
+                <input
                   aria-label="Email address"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Email address"
@@ -47,6 +111,8 @@ const RegisterComponent = (props) => {
               <div className="-mt-px">
                 <input
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Password"
@@ -55,28 +121,14 @@ const RegisterComponent = (props) => {
               <div className="-mt-px">
                 <input
                   aria-label="Password"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
                   name="password"
                   type="password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Confirm Password"
                 />
-              </div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember_me"
-                  type="checkbox"
-                  className="form-checkbox h-4 w-4 text-purple-600 transition duration-150 ease-in-out"
-                />
-                <label
-                  htmlFor="remember_me"
-                  className="ml-2 block text-sm leading-5 text-gray-900"
-                >
-                  Pick My Location
-                </label>
               </div>
             </div>
 
@@ -98,7 +150,7 @@ const RegisterComponent = (props) => {
                     />
                   </svg>
                 </span>
-                Sign in
+                {loading ? "Registering user..." : "Register"}
               </button>
             </div>
           </form>

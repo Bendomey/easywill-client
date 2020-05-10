@@ -27,9 +27,7 @@ const Layout = (props) => {
   const [showProfile, setShowProfile] = useState(false);
   const { push } = useHistory();
   const { pathname } = useLocation();
-  const [showDropdown, setShowDropdown] = useState(false);
   const [logoutReguest, setLogoutRequest] = useState(false);
-  // const [{ signOut }] = useContext(AuthContext);
 
   const handleLogout = () => {
     localStorage.removeItem("eaze-token");
@@ -334,7 +332,7 @@ const Layout = (props) => {
         <Suspense fallback={loading()}>
           <Switch>
             {routes.map((screen, i) => (
-              <Route
+              <PrivateRoute
                 name={screen.name}
                 key={i}
                 component={screen.component}

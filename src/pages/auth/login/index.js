@@ -1,6 +1,44 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { toaster } from "evergreen-ui";
+import { post } from "../../../components/auth/transport";
+import {useHistory} from "react-router-dom";
 
 const LoginComponent = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { push } = useHistory();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    document.title = "Login - Easy Will";
+  });
+
+  const submitLoading = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      let results = await post("/loginUser", {
+        email,
+        password,
+      });
+      if (results.data.ok === false) {
+        setLoading(true);
+        return toaster.warning("Error", {
+          description: results.data.error,
+        });
+      }
+      localStorage.setItem("eaze-token", JSON.stringify(results.data.data));
+      push("/");
+      toaster.success("Hurray", {
+        description: "You logged in successfully",
+      });
+      // console.log(results.data);
+      setLoading(false);
+    } catch (e) {
+      toaster.warning("Error", {
+        description: e.message,
+      });
+    }
+  };
   return (
     <Fragment>
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -8,14 +46,14 @@ const LoginComponent = (props) => {
           <div>
             <img
               className="mx-auto h-12 w-auto"
-              src={require('../../../assets/logo.svg')}
+              src={require("../../../assets/logo.svg")}
               alt="Workflow"
             />
             <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
               Sign in to your account
             </h2>
           </div>
-          <form className="mt-8" action="#" method="POST">
+          <form className="mt-8" onSubmit={submitLoading}>
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm">
               <div>
@@ -23,6 +61,8 @@ const LoginComponent = (props) => {
                   aria-label="Email address"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Email address"
@@ -33,6 +73,8 @@ const LoginComponent = (props) => {
                   aria-label="Password"
                   name="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
                   placeholder="Password"
@@ -54,15 +96,6 @@ const LoginComponent = (props) => {
                   Remember me
                 </label>
               </div>
-
-              <div className="text-sm leading-5">
-                <a
-                  href="#"
-                  className="font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                >
-                  Forgot your password?
-                </a>
-              </div>
             </div>
 
             <div className="mt-6">
@@ -83,7 +116,7 @@ const LoginComponent = (props) => {
                     />
                   </svg>
                 </span>
-                Sign in
+                {loading ? "Logging in..." : "Sign in"}
               </button>
             </div>
           </form>
