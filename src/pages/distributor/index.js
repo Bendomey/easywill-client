@@ -18,7 +18,7 @@ const DistributorComponent = (props) => {
               alert("hello");
             }}
           >
-            <div className="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
+            <div className="mt-6 mx-3 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label
                   htmlFor="country"

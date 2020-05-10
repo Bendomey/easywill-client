@@ -18,7 +18,7 @@ const BiographyComponent = (props) => {
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div>
-            <div className="sm:hidden">
+            <div className="sm:hidden mx-3">
               <select
                   onChange={(e)=>setActive(e.target.value)}
                 aria-label="Selected tab"

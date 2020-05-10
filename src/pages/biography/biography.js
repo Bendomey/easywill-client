@@ -9,7 +9,7 @@ const BiographySingleComponent = (props) => {
         e.preventDefault()
         alert('hello')
       }}>
-        <div className="mt-6 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
+        <div className="mt-6 mx-3 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
           <div className="sm:col-span-3">
             <label
                 htmlFor="country"
@@ -274,7 +274,7 @@ const BiographySingleComponent = (props) => {
             </div>
           </div>
         </div>
-        <div className="bg-white mt-5 pt-2 border-t border-gray-200 flex justify-end ">
+        <div className="bg-white mt-5 pt-2 border-t mx-3 border-gray-200 flex justify-end ">
           <button
               type="submit"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-light rounded-md text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-600 active:bg-blue-600 transition duration-150 ease-in-out"

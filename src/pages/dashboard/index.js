@@ -1,6 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useEffect } from "react";
 
 const DashboardComponent = (props) => {
+    useEffect(()=>{
+        document.title = "Welcome - Easywill"
+    })
   return (
     <Fragment>
       <header className="bg-white shadow">
