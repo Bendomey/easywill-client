@@ -1,57 +1,50 @@
 import React, { Fragment, useState } from "react";
+import { post } from "../../components/auth/transport";
+import { toaster } from "evergreen-ui";
 import countries from "../../components/data/countries";
 import regions from "../../components/data/regions";
-import { toaster } from "evergreen-ui";
-import { post } from "../../components/auth/transport";
 
-const BiographySingleComponent = ({ data, user }) => {
-  const [idType, setIDType] = useState(data?.idnumtype || "");
-  const [idNum, setIDNum] = useState(data?.idnum || "");
-  const [tinNum, setTin] = useState(data?.tinnumber || "");
-  const [familyName, setFamilyName] = useState(data?.familyname || "");
-  const [firstName, setFirstName] = useState(data?.firstname || "");
-  const [otherName, setOtherName] = useState(data?.othername || "");
+const EditExecutor = ({ data }) => {
+  const [loading, setLoading] = useState("");
+  const [city, setCity] = useState(data?.city || "");
+  const [country, setCountry] = useState(data?.country || "");
+  const [dateofbirth, setDOB] = useState(data?.dateofbirth || "");
+  const [familyname, setFamilyName] = useState(data?.familyname || "");
+  const [firstname, setFirstName] = useState(data?.firstname || "");
   const [gender, setGender] = useState(data?.gender || "");
-  const [dob, setDob] = useState(data?.dateofbirth || "");
-  const [birthCountry, setBirthCountry] = useState(data?.birthcountry || "");
-  const [birthState, setBirthState] = useState(data?.birthstate || "");
-  const [birthCity, setBirthCity] = useState(data?.birthcity || "");
-  const [phone, setPhone] = useState(data?.phonenumber || "");
-  const [country, setCountry] = useState(data?.addresscountry || "");
-  const [region, setRegion] = useState(data?.addressstate || "");
-  const [city, setCity] = useState(data?.addresscity || "");
-  const [loading, setLoading] = useState(false);
+  const [othername, setOtherName] = useState(data?.othername || "");
+  const [phonenumber, setPhoneNumber] = useState(data?.phonenumber || "");
+  const [idnumber, setIDNum] = useState(data?.idnumber || "");
+  const [idnumtype, setIDType] = useState(data?.idnumtype || "");
+  const [state, setState] = useState(data?.state || "");
+  const [address, setAddress] = useState(data?.address || "");
+  const [user] = useState(localStorage.getItem("eaze-token"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await post("/addPersonalInformation", {
+      await post("/addExecutorInformation", {
         id: JSON.parse(user).id,
-        idType,
-        idNum,
-        tinNum,
-        familyName,
-        firstName,
-        otherName,
-        gender,
-        dob,
-        birthCountry,
-        birthState,
-        birthCity,
-        phone,
-        country,
-        region,
         city,
+        country,
+        dateofbirth,
+        familyname,
+        firstname,
+        gender,
+        othername,
+        phonenumber,
+        idnumber,
+        idnumtype,
+        address,
+        state,
       });
       setLoading(false);
       toaster.success("Hurray", {
-        description: "Personal Information updated successfully",
+        description: "Executor updated successfully",
       });
     } catch (e) {
-      toaster.warning("Error", {
-        description: e.response.data.error,
-      });
+      console.log(e);
     }
   };
   return (
@@ -59,14 +52,16 @@ const BiographySingleComponent = ({ data, user }) => {
       <form onSubmit={handleSubmit}>
         <div className="mt-6 mx-3 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
           <div className="sm:col-span-3">
-            <label className="block text-sm font-medium leading-5 text-gray-700">
+            <label
+              htmlFor="country"
+              className="block text-sm font-medium leading-5 text-gray-700"
+            >
               Identification Type
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
-                value={idType}
+                value={idnumtype}
                 onChange={(e) => setIDType(e.target.value)}
-                required={true}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -78,14 +73,16 @@ const BiographySingleComponent = ({ data, user }) => {
           </div>
 
           <div className="sm:col-span-3">
-            <label className="block text-sm font-medium leading-5 text-gray-700">
+            <label
+              htmlFor="last_name"
+              className="block text-sm font-medium leading-5 text-gray-700"
+            >
               Identification Number
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={idNum}
+                value={idnumber}
                 onChange={(e) => setIDNum(e.target.value)}
-                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -95,29 +92,12 @@ const BiographySingleComponent = ({ data, user }) => {
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Tax Identification Number
+              Executor's Family Name
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={tinNum}
-                onChange={(e) => setTin(e.target.value)}
-                required={true}
-                className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-              />
-            </div>
-          </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="last_name"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              Family Name
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              <input
-                value={familyName}
+                value={familyname}
                 onChange={(e) => setFamilyName(e.target.value)}
-                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -127,13 +107,12 @@ const BiographySingleComponent = ({ data, user }) => {
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              First Name
+              Executor's First Name
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={firstName}
+                value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
-                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -143,13 +122,11 @@ const BiographySingleComponent = ({ data, user }) => {
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Middle Name
+              Executor's Middle Name
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                id="last_name"
-                required={false}
-                value={otherName}
+                value={othername}
                 onChange={(e) => setOtherName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
@@ -166,7 +143,6 @@ const BiographySingleComponent = ({ data, user }) => {
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
-                required={true}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -184,88 +160,14 @@ const BiographySingleComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-                required={true}
+                value={dateofbirth}
+                onChange={(e) => setDOB(e.target.value)}
                 type={"date"}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              Country Of Birth
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              <select
-                value={birthCountry}
-                onChange={(e) => setBirthCountry(e.target.value)}
-                required={true}
-                className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-              >
-                <option value={""}>Please select</option>
-                {countries.map((country, i) => (
-                  <Fragment key={i}>
-                    <option value={country.country}>{country.country}</option>
-                  </Fragment>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              Region Of Birth
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              {birthCountry === "Ghana" ? (
-                <Fragment>
-                  <select
-                    required={false}
-                    value={birthState}
-                    onChange={(e) => setBirthState(e.target.value)}
-                    required={true}
-                    className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                  >
-                    <option value={""}>Please select</option>
-                    {regions.map((region, i) => (
-                      <Fragment key={i}>
-                        <option value={region}>{region}</option>
-                      </Fragment>
-                    ))}
-                  </select>
-                </Fragment>
-              ) : (
-                <input
-                  value={birthState}
-                  onChange={(e) => setBirthState(e.target.value)}
-                  required={true}
-                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                />
-              )}
-            </div>
-          </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="last_name"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              City Of Birth
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              <input
-                value={birthCity}
-                onChange={(e) => setBirthCity(e.target.value)}
-                required={true}
-                className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-              />
-            </div>
-          </div>
+
           <div className="sm:col-span-3">
             <label
               htmlFor="last_name"
@@ -275,9 +177,23 @@ const BiographySingleComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required={true}
+                value={phonenumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+              />
+            </div>
+          </div>
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="last_name"
+              className="block text-sm font-medium leading-5 text-gray-700"
+            >
+              Physical Address
+            </label>
+            <div className="mt-1 rounded-md shadow-sm">
+              <input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -287,13 +203,12 @@ const BiographySingleComponent = ({ data, user }) => {
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Address (Country)
+              Country
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                required={true}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -310,14 +225,13 @@ const BiographySingleComponent = ({ data, user }) => {
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Address (Region)
+              Region
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               {country === "Ghana" ? (
                 <select
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  required={true}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
                   className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 >
                   <option value={""}>Please select</option>
@@ -329,9 +243,8 @@ const BiographySingleComponent = ({ data, user }) => {
                 </select>
               ) : (
                 <input
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  required={true}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
                   className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
               )}
@@ -342,24 +255,23 @@ const BiographySingleComponent = ({ data, user }) => {
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Address (City)
+              City
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
         </div>
-        <div className="bg-white mt-5 pt-2 border-t mx-3 border-gray-200 flex justify-end ">
+        <div className="bg-white mt-5 pt-2 border-t border-gray-200 mx-3 flex justify-end ">
           <button
             type="submit"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-light rounded-md text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-600 active:bg-blue-600 transition duration-150 ease-in-out"
           >
-            {loading ? "Saving..." : "Submit"}
+            {loading ? "Adding..." : "Submit"}
           </button>
         </div>
       </form>
@@ -367,4 +279,4 @@ const BiographySingleComponent = ({ data, user }) => {
   );
 };
 
-export default BiographySingleComponent;
+export default EditExecutor;

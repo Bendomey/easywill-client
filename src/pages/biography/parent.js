@@ -1,16 +1,85 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import countries from "../../components/data/countries";
 import regions from "../../components/data/regions";
+import { post } from "../../components/auth/transport";
+import { toaster } from "evergreen-ui";
 
-const ParentComponent = (props) => {
+const ParentComponent = ({ data, user }) => {
+  const [fatherfamilyname, setFamilyName] = useState(
+    data?.fatherfamilyname || ""
+  );
+  const [fatherfirstname, setFirstName] = useState(data?.fatherfirstname || "");
+  const [fathermiddlename, setOtherName] = useState(
+    data?.fathermiddlename || ""
+  );
+  const [fatherbirthdate, setDob] = useState(data?.fatherbirthdate || "");
+  const [fatherbirthcountry, setBirthCountry] = useState(
+    data?.fatherbirthcountry || ""
+  );
+  const [fatherbirthstate, setBirthState] = useState(
+    data?.fatherbirthstate || ""
+  );
+  const [fatherbirthcity, setBirthCity] = useState(data?.fatherbirthcity || "");
+  const [fatherphonenumber, setPhone] = useState(data?.fatherphonenumber || "");
+
+  const [motherfamilyname, setMotherFamilyName] = useState(
+    data?.motherfamilyname || ""
+  );
+  const [motherfirstname, setMotherFirstName] = useState(
+    data?.motherfirstname || ""
+  );
+  const [mothermiddlename, setMotherOtherName] = useState(
+    data?.mothermiddlename || ""
+  );
+  const [motherbirthdate, setMptherDob] = useState(data?.motherbirthdate || "");
+  const [motherbirthcountry, setMotherBirthCountry] = useState(
+    data?.motherbirthcountry || ""
+  );
+  const [motherbirthstate, setMotherBirthState] = useState(
+    data?.motherbirthstate || ""
+  );
+  const [motherbirthcity, setMotherBirthCity] = useState(
+    data?.motherbirthcity || ""
+  );
+  const [motherphonenumber, setMotherPhone] = useState(
+    data?.motherphonenumber || ""
+  );
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      await post("/addParentInformation", {
+        id: JSON.parse(user).id,
+        fatherfamilyname,
+        fatherfirstname,
+        fathermiddlename,
+        fatherbirthdate,
+        fatherbirthcountry,
+        fatherbirthstate,
+        fatherbirthcity,
+        fatherphonenumber,
+        motherfamilyname,
+        motherfirstname,
+        mothermiddlename,
+        motherbirthdate,
+        motherbirthcountry,
+        motherbirthstate,
+        motherbirthcity,
+        motherphonenumber,
+      });
+      setLoading(false);
+      toaster.success("Hurray", {
+        description: "Parent Information updated successfully",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Fragment>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert("hello");
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="mt-6 mx-3 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
           <div className="sm:col-span-3">
             <label
@@ -21,7 +90,8 @@ const ParentComponent = (props) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                id="last_name"
+                value={fatherfamilyname}
+                onChange={(e) => setFamilyName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -35,7 +105,8 @@ const ParentComponent = (props) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                id="last_name"
+                value={fatherfirstname}
+                onChange={(e) => setFirstName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -49,7 +120,8 @@ const ParentComponent = (props) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                id="last_name"
+                value={fathermiddlename}
+                onChange={(e) => setFamilyName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -63,7 +135,8 @@ const ParentComponent = (props) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                id="last_name"
+                value={fatherbirthdate}
+                onChange={(e) => setDob(e.target.value)}
                 type={"date"}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
@@ -79,6 +152,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <select
                 id="country"
+                value={fatherbirthcountry}
+                onChange={(e) => setBirthCountry(e.target.value)}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -100,6 +175,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <select
                 id="country"
+                value={fatherbirthstate}
+                onChange={(e) => setBirthState(e.target.value)}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -121,6 +198,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={fatherbirthcity}
+                onChange={(e) => setBirthCity(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -135,6 +214,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={fatherphonenumber}
+                onChange={(e) => setPhone(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -149,6 +230,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={motherfamilyname}
+                onChange={(e) => setMotherFamilyName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -163,6 +246,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={motherfirstname}
+                onChange={(e) => setMotherFirstName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -177,6 +262,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={mothermiddlename}
+                onChange={(e) => setMotherOtherName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -190,7 +277,8 @@ const ParentComponent = (props) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                id="last_name"
+                value={motherbirthdate}
+                onChange={(e) => setMptherDob(e.target.value)}
                 type={"date"}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
@@ -206,6 +294,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <select
                 id="country"
+                value={motherbirthcountry}
+                onChange={(e) => setMotherBirthCountry(e.target.value)}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -227,6 +317,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <select
                 id="country"
+                value={motherbirthstate}
+                onChange={(e) => setMotherBirthState(e.target.value)}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -248,6 +340,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={motherbirthcity}
+                onChange={(e) => setMotherBirthCity(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -262,6 +356,8 @@ const ParentComponent = (props) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                value={motherphonenumber}
+                onChange={(e) => setMotherPhone(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
@@ -272,7 +368,7 @@ const ParentComponent = (props) => {
             type="submit"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-light rounded-md text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-600 active:bg-blue-600 transition duration-150 ease-in-out"
           >
-            Submit
+            {loading ? "Updating..." : "Submit"}
           </button>
         </div>
       </form>

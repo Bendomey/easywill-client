@@ -1,126 +1,133 @@
 import React, { Fragment, useState } from "react";
+import { toaster } from "evergreen-ui";
+import { post } from "../../components/auth/transport";
 import countries from "../../components/data/countries";
 import regions from "../../components/data/regions";
-import { post } from "../../components/auth/transport";
-import { toaster } from "evergreen-ui";
 
-const MarriageComponent = ({ data, user }) => {
-  const [spousefamilyname, setFamilyName] = useState(
-    data?.spousefamilyname || ""
-  );
-  const [spousefirstname, setFirstName] = useState(data?.spousefirstname || "");
-  const [spousemiddlename, setOtherName] = useState(
-    data?.spousemiddlename || ""
-  );
-  const [spousegender, setGender] = useState(data?.spousegender || "");
-  const [spousebirthdate, setDob] = useState(data?.spousebirthdate || "");
-  const [spousebirthcountry, setBirthCountry] = useState(
-    data?.spousebirthcountry || ""
-  );
-  const [spousebirthstate, setBirthState] = useState(
-    data?.spousebirthstate || ""
-  );
-  const [spousebirthcity, setBirthCity] = useState(data?.spousebirthcity || "");
-  const [spousephonenumber, setPhone] = useState(data?.spousephonenumber || "");
-  const [spouseaddresscountry, setCountry] = useState(
-    data?.spouseaddresscountry || ""
-  );
-  const [spouseaddressstate, setRegion] = useState(
-    data?.spouseaddressstate || ""
-  );
-  const [spouseaddresscity, setCity] = useState(data?.spouseaddresscity || "");
+const AddBeneficiaryComponent = ({ user, fetch, show, data, setData }) => {
   const [loading, setLoading] = useState(false);
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [dateofbirth, setDOB] = useState("");
+  const [familyname, setFamilyName] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [gender, setGender] = useState("");
+  const [othername, setOtherName] = useState("");
+  const [phonenumber, setPhoneNumber] = useState("");
+  const [relation, setRelation] = useState("");
+  const [state, setState] = useState("");
+
+  const handleInit = () => {
+    setCity("");
+    setCountry("");
+    setDOB("");
+    setFamilyName("");
+    setFirstName("");
+    setGender("");
+    setOtherName("");
+    setPhoneNumber("");
+    setRelation("");
+    setState("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await post("/addMarriageInformation", {
+      let results = await post("/addBeneficiaryInformation", {
         id: JSON.parse(user).id,
-        spousefamilyname,
-        spousefirstname,
-        spousemiddlename,
-        spousegender,
-        spousebirthdate,
-        spousebirthcountry,
-        spousebirthstate,
-        spousebirthcity,
-        spousephonenumber,
-        spouseaddresscountry,
-        spouseaddressstate,
-        spouseaddresscity,
+        city,
+        country,
+        dateofbirth,
+        familyname,
+        firstname,
+        gender,
+        othername,
+        phonenumber,
+        relation,
+        state,
       });
       setLoading(false);
+      await fetch();
       toaster.success("Hurray", {
-        description: "Marriage Information updated successfully",
+        description: "Beneficiary added successfully",
       });
+      setData({
+        ...data,
+        [results?.data?.data.id]: results?.data?.data,
+      });
+      show(false);
+      handleInit();
     } catch (e) {
-      console.log(e)
-      // toaster.warning("Error", {
-      //   description: e.response.data.error,
-      // });
+      toaster.warning("Error", {
+        description: e.response.data.error,
+      });
     }
   };
   return (
     <Fragment>
       <form onSubmit={handleSubmit}>
-        <div className="mt-6 grid mx-3 grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
-          <div className="sm:col-span-3">
+        <div className="mt-6 grid grid-cols-1 mx-3 row-gap-6 col-gap-4 sm:grid-cols-6">
+          <div className="sm:col-span-6">
             <label
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Spouse's Family Name
+              Beneficiary's Family Name
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={spousefamilyname}
+                value={familyname}
                 onChange={(e) => setFamilyName(e.target.value)}
+                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Spouse's First Name
+              Beneficiary's First Name
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={spousefirstname}
+                value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
+                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Spouse's Middle Name
+              Beneficiary's Middle Name
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={spousemiddlename}
+                value={othername}
                 onChange={(e) => setOtherName(e.target.value)}
+                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Gender
+              Beneficiary's Gender
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
-                value={spousegender}
+                value={gender}
                 onChange={(e) => setGender(e.target.value)}
+                required={true}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -129,23 +136,41 @@ const MarriageComponent = ({ data, user }) => {
               </select>
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Date Of Birth
+              Beneficiary's Date Of Birth
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={spousebirthdate}
-                onChange={(e) => setDob(e.target.value)}
+                value={dateofbirth}
+                onChange={(e) => setDOB(e.target.value)}
+                required={true}
                 type={"date"}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
+            <label
+              htmlFor="last_name"
+              className="block text-sm font-medium leading-5 text-gray-700"
+            >
+              Phone Number
+            </label>
+            <div className="mt-1 rounded-md shadow-sm">
+              <input
+                value={phonenumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required={true}
+                type={"text"}
+                className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+              />
+            </div>
+          </div>
+          <div className="sm:col-span-6">
             <label
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
@@ -154,8 +179,9 @@ const MarriageComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
-                value={spousebirthcountry}
-                onChange={(e) => setBirthCountry(e.target.value)}
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                required={true}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
@@ -167,7 +193,7 @@ const MarriageComponent = ({ data, user }) => {
               </select>
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
@@ -175,10 +201,10 @@ const MarriageComponent = ({ data, user }) => {
               Region Of Birth
             </label>
             <div className="mt-1 rounded-md shadow-sm">
-              {spousebirthcountry === "Ghana" ? (
+              {country === "Ghana" ? (
                 <select
-                  value={spousebirthstate}
-                  onChange={(e) => setBirthState(e.target.value)}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
                   required={true}
                   className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 >
@@ -191,14 +217,15 @@ const MarriageComponent = ({ data, user }) => {
                 </select>
               ) : (
                 <input
-                  value={spousebirthstate}
-                  onChange={(e) => setBirthState(e.target.value)}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  required={true}
                   className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
               )}
             </div>
           </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
@@ -207,101 +234,47 @@ const MarriageComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
-                value={spousebirthcity}
-                onChange={(e) => setBirthCity(e.target.value)}
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required={true}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
           </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="last_name"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              Phone Number
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              <input
-                value={spousephonenumber}
-                onChange={(e) => setPhone(e.target.value)}
-                className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-              />
-            </div>
-          </div>
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-6">
             <label
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Country
+              Relation
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
-                value={spouseaddresscountry}
-                onChange={(e) => setCountry(e.target.value)}
+                value={relation}
+                onChange={(e) => setRelation(e.target.value)}
+                required={true}
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
                 <option value={""}>Please select</option>
-                {countries.map((country, i) => (
-                  <Fragment key={i}>
-                    <option value={country.country}>{country.country}</option>
-                  </Fragment>
-                ))}
+                <option value={"Brother"}>Brother</option>
+                <option value={"Cousin"}>Cousin</option>
+                <option value={"Daughter"}>Daughter</option>
+                <option value={"Nephew"}>Nephew</option>
+                <option value={"Niece"}>Niece</option>
+                <option value={"Sister"}>Sister</option>
+                <option value={"Son"}>Son</option>
+                <option value={"Uncle"}>Uncle</option>
               </select>
             </div>
           </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              Region
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              {spouseaddresscountry === "Ghana" ? (
-                <select
-                  value={spouseaddressstate}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                >
-                  <option value={""}>Please select</option>
-                  {regions.map((region, i) => (
-                    <Fragment key={i}>
-                      <option value={region}>{region}</option>
-                    </Fragment>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  value={spouseaddressstate}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                />
-              )}
-            </div>
-          </div>
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="last_name"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
-              City
-            </label>
-            <div className="mt-1 rounded-md shadow-sm">
-              <input
-                value={spouseaddresscity}
-                onChange={(e) => setCity(e.target.value)}
-                className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-              />
-            </div>
-          </div>
         </div>
-        <div className="bg-white mt-5 pt-2 border-t border-gray-200 flex mx-3 justify-end ">
+        <div className="bg-white my-5 pt-2 border-t mx-3 border-gray-200 flex justify-end ">
           <button
+            disabled={loading}
             type="submit"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-light rounded-md text-white bg-blue-500 hover:bg-blue-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-600 active:bg-blue-600 transition duration-150 ease-in-out"
           >
-            {loading ? "Saving..." : "Submit"}
+            {loading ? "Adding..." : "Submit"}
           </button>
         </div>
       </form>
@@ -309,4 +282,4 @@ const MarriageComponent = ({ data, user }) => {
   );
 };
 
-export default MarriageComponent;
+export default AddBeneficiaryComponent;

@@ -1,6 +1,36 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { post } from "../../components/auth/transport";
+import { SideSheet, Spinner } from "evergreen-ui";
+import AddBeneficiaryComponent from "../beneficiary/add";
+import AddDistributor from "./add";
 
 const DistributorComponent = (props) => {
+  const [show, setShow] = useState(false);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [user] = useState(localStorage.getItem("eaze-token"));
+
+  const fetchDistributor = async () => {
+    console.log(JSON.parse(user).id);
+    try {
+      setLoading(true);
+      let results = await post("/fetchUser", {
+        id: JSON.parse(user).id,
+      });
+      setLoading(false);
+      setData(results.data?.data?.distribution);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        await fetchDistributor();
+      }
+    })();
+  }, [user]);
   return (
     <Fragment>
       <header className="bg-white shadow">
@@ -12,63 +42,92 @@ const DistributorComponent = (props) => {
       </header>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("hello");
+          <div
+            onClick={() => {
+              setShow(true);
             }}
+            style={{ cursor: "pointer" }}
+            className={
+              "w-full bg-gray-100 flex font-light text-sm hover:bg-gray-200 justify-center items-center p-3"
+            }
           >
-            <div className="mt-6 mx-3 grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium leading-5 text-gray-700"
-                >
-                  Assets
-                </label>
-                <div className="mt-1 rounded-md shadow-sm">
-                  <select
-                    id="country"
-                    className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+            Add New Distribution
+          </div>
+          {loading ? (
+            <Fragment>
+              <div
+                style={{
+                  height: "50vh",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Spinner />
+              </div>
+            </Fragment>
+          ) : (
+            <Fragment>
+              {!data ? (
+                <Fragment>
+                  <div
+                    style={{
+                      height: "50vh",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <option value={""}>Please select</option>
-                  </select>
-                </div>
-              </div>
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium leading-5 text-gray-700"
-                >
-                  Beneficiary
-                </label>
-                <div className="mt-1 rounded-md shadow-sm">
-                  <select
-                    id="country"
-                    className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                  >
-                    <option value={""}>Please select</option>
-                  </select>
-                </div>
-              </div>
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="last_name"
-                  className="block text-sm font-medium leading-5 text-gray-700"
-                >
-                  Distribution Condition
-                </label>
-                <div className="mt-1 rounded-md shadow-sm">
-                  <textarea
-                    rows={5}
-                    className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-          </form>
+                    No data...
+                  </div>
+                </Fragment>
+              ) : (
+                <Fragment>vkbv</Fragment>
+              )}
+            </Fragment>
+          )}
         </div>
       </main>
+      <SideSheet
+        isShown={show}
+        width={400}
+        onCloseComplete={() => {
+          setShow(false);
+        }}
+      >
+        <Fragment>
+          <div className="md:flex md:items-center md:justify-between border-b p-5">
+            <div className="flex-1 min-w-0">
+              <p className="text-1xl font-medium leading-7 text-gray-500 sm:leading-9 sm:truncate">
+                Add New Distributor
+              </p>
+            </div>
+            <div className="mt-4 flex md:mt-0 md:ml-4">
+              <span className="shadow-sm rounded-md lg:hidden sm:block">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShow(false);
+                  }}
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out"
+                >
+                  Close
+                </button>
+              </span>
+            </div>
+          </div>
+          <div>
+            <AddDistributor
+              fetch={fetchDistributor}
+              data={data && data}
+              setData={setData}
+              user={user && user}
+            />
+          </div>
+        </Fragment>
+      </SideSheet>
     </Fragment>
   );
 };

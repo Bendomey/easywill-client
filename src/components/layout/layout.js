@@ -28,6 +28,7 @@ const Layout = (props) => {
   const { push } = useHistory();
   const { pathname } = useLocation();
   const [logoutReguest, setLogoutRequest] = useState(false);
+  const [user] = useState(JSON.parse(localStorage.getItem("eaze-token")));
 
   const handleLogout = () => {
     localStorage.removeItem("eaze-token");
@@ -298,10 +299,10 @@ const Layout = (props) => {
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium leading-none text-white">
-                    Tom Cook
+                    {user?.otherNames} {user?.firstName}
                   </div>
                   <div className="mt-1 text-sm font-medium leading-none text-gray-400">
-                    tom@example.com
+                    {user?.email}
                   </div>
                 </div>
               </div>
