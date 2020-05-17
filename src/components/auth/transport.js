@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toaster } from "evergreen-ui";
 
-axios.defaults.baseURL = "https://us-central1-samansiwill.cloudfunctions.net"; //
+axios.defaults.baseURL = "https://us-central1-samansiwill.cloudfunctions.net"
 // axios.defaults.baseURL = "http://localhost:5001/samansiwill/us-central1"; //
 
 const config = {
