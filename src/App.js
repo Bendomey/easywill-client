@@ -4,6 +4,7 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register/register";
 import Layout from "./components/layout/layout";
+import AdminLayout from "./components/admin/layout";
 
 function loading() {
   return (
@@ -40,6 +41,10 @@ function App() {
             name={"Register"}
             render={(props) => <Register {...props} />}
           />
+            <Route
+                path={"/admin"}
+                render={(props) => <AdminLayout {...props} />}
+            />
           <Route path={"/"} render={(props) => <Layout {...props} />} />
         </Switch>
       </BrowserRouter>
