@@ -251,7 +251,6 @@ const BiographySingleComponent = ({ data, user }) => {
                     required={false}
                     value={birthState}
                     onChange={(e) => setBirthState(e.target.value)}
-                    required={true}
                     className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                   >
                     <option value={""}>Please select</option>

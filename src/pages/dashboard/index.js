@@ -28,6 +28,7 @@ const DashboardComponent = (props) => {
         setLoading(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Fragment>

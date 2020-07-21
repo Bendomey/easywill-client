@@ -1,7 +1,7 @@
-import React, { Fragment, Suspense, useContext, useState } from "react";
+import React, { Fragment, Suspense, useState } from "react";
 import routes from "../../routes";
 import PrivateRoute from "../privateRoute";
-import { useLocation, Link, Switch, useHistory, Route } from "react-router-dom";
+import { useLocation, Link, Switch, useHistory } from "react-router-dom";
 import { Spinner, CornerDialog } from "evergreen-ui";
 // import { AuthContext } from "../../context/auth";
 
@@ -159,22 +159,21 @@ const Layout = (props) => {
                           aria-orientation="vertical"
                           aria-labelledby="user-menu"
                         >
-                          <a
-                            href="#"
+                          <Link
+                            to="/"
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                           >
                             Your Profile
-                          </a>
-                          <a
-                            href="#"
+                          </Link>
+                          <Link
+                            to="#/"
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                           >
                             Settings
-                          </a>
-                          <a
-                            href="#"
+                          </Link>
+                          <Link
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                             onClick={() => {
@@ -183,7 +182,7 @@ const Layout = (props) => {
                             }}
                           >
                             Sign out
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     )}
@@ -307,24 +306,21 @@ const Layout = (props) => {
                 </div>
               </div>
               <div className="mt-3 px-2">
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
                 >
                   Your Profile
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/"
                   className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
                 >
                   Settings
-                </a>
-                <a
-                  href="#"
-                  className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
-                >
+                </Link>
+                <Link className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
                   Sign out
-                </a>
+                </Link>
               </div>
             </div>
           </div>

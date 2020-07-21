@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { SideSheet, toaster } from "evergreen-ui";
 import axios from "axios";
 import { v4 } from "uuid";

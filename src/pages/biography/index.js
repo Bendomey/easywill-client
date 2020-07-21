@@ -3,7 +3,7 @@ import BiographySingleComponent from "./biography";
 import MarriageComponent from "./marriage";
 import ParentComponent from "./parent";
 import ChildrenComponent from "./children";
-import { Spinner, toaster } from "evergreen-ui";
+import { Spinner } from "evergreen-ui";
 import { post } from "../../components/auth/transport";
 
 const BiographyComponent = (props) => {
@@ -32,6 +32,7 @@ const BiographyComponent = (props) => {
         setLoading(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Fragment>

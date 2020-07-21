@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { post } from "../../components/auth/transport";
 import { SideSheet, Spinner } from "evergreen-ui";
-import AddBeneficiaryComponent from "../beneficiary/add";
+// import AddBeneficiaryComponent from "../beneficiary/add";
 import AddDistributor from "./add";
 
 const DistributorComponent = (props) => {
@@ -30,6 +30,7 @@ const DistributorComponent = (props) => {
         await fetchDistributor();
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   return (
     <Fragment>

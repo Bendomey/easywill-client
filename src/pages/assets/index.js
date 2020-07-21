@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { SideSheet, Spinner } from "evergreen-ui";
 import MetalComponent from "./metal";
 import { post } from "../../components/auth/transport";
-import ParentComponent from "../biography/parent";
+// import ParentComponent from "../biography/parent";
 import LandComponent from "./land";
 import AutomobileComponent from "./automobile";
 import InsuranceComponent from "./insurance";
@@ -48,6 +48,7 @@ const AssetsComponent = (props) => {
         setLoading(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Fragment>

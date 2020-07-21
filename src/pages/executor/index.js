@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { post } from "../../components/auth/transport";
-import { Spinner, toaster } from "evergreen-ui";
+import { Spinner } from "evergreen-ui";
 import EditExecutor from "./form";
 
 const ExecutorComponent = (props) => {

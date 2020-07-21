@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from "react";
 import countries from "../../components/data/countries";
 import regions from "../../components/data/regions";
-import { SideSheet, Spinner, toaster } from "evergreen-ui";
+import { SideSheet, toaster } from "evergreen-ui";
 import { post } from "../../components/auth/transport";
 import moment from "moment";
 
-const ChildrenComponent = ({ data, user, fetch,setData }) => {
+const ChildrenComponent = ({ data, user, fetch, setData }) => {
   const [show, setShow] = useState(false);
   const [familyname, setFamilyName] = useState("");
   const [firstname, setFirstName] = useState("");
@@ -54,16 +54,16 @@ const ChildrenComponent = ({ data, user, fetch,setData }) => {
       });
       setData({
         ...data,
-        children:{
+        children: {
           ...data.children,
-          [results?.data?.data.id]:results?.data?.data
-        }
-      })
+          [results?.data?.data.id]: results?.data?.data,
+        },
+      });
 
       setShow(false);
       handleInit();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   };
 
@@ -131,8 +131,7 @@ const ChildrenComponent = ({ data, user, fetch,setData }) => {
                 return (
                   <Fragment key={i}>
                     <li className={`${i > 0 && "border-t border-gray-200"}`}>
-                      <a
-                        href={"#"}
+                      <span
                         onClick={() => {
                           setChild(key);
                           setFirstName(value?.firstname);
@@ -231,7 +230,7 @@ const ChildrenComponent = ({ data, user, fetch,setData }) => {
                             </svg>
                           </div>
                         </div>
-                      </a>
+                      </span>
                     </li>
                   </Fragment>
                 );

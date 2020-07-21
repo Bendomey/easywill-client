@@ -121,7 +121,7 @@ const ParentComponent = ({ data, user }) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 value={fathermiddlename}
-                onChange={(e) => setFamilyName(e.target.value)}
+                onChange={(e) => setOtherName(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>
