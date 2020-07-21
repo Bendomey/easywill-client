@@ -32,8 +32,8 @@ const FAQS = (props) => {
   const [loadFaqs, setLoadFaqs] = useState(false);
 
   const fetchFaqs = () => {
-    // axios("https://us-central1-samansiwill.cloudfunctions.net/faqs")
-    axios("http://localhost:5001/samansiwill/us-central1/blogs")
+    axios("https://us-central1-samansiwill.cloudfunctions.net/blogs")
+      // axios("http://localhost:5001/samansiwill/us-central1/blogs")
       .then((res) => res.data)
       .then((result) => {
         setLoadFaqs(false);
@@ -102,8 +102,8 @@ const FAQS = (props) => {
             //data that is uploaded
             axios({
               method: "POST",
-              // url: `https://us-central1-samansiwill.cloudfunctions.net/addBlogs`,
-              url: `http://localhost:5001/samansiwill/us-central1/addBlogs`,
+              url: `https://us-central1-samansiwill.cloudfunctions.net/addBlogs`,
+              // url: `http://localhost:5001/samansiwill/us-central1/addBlogs`,
               headers: {
                 "Content-Type": "application/json",
               },
