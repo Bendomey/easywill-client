@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { post } from "../../components/auth/transport";
-import {Link} from "react-router-dom";
-import {Li} from "evergreen-ui";
+import { Link } from "react-router-dom";
 
 const DashboardComponent = (props) => {
   const [data, setData] = useState(null);
@@ -44,7 +43,10 @@ const DashboardComponent = (props) => {
           <div className="px-4 py-6 sm:px-0">
             <div>
               <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-                <Link to={"biography"} className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg">
+                <Link
+                  to={"biography"}
+                  className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg"
+                >
                   <div className="px-4 py-5 sm:p-6">
                     <dl>
                       <dt className="text-sm leading-5 font-medium text-gray-500 truncate">
@@ -60,7 +62,10 @@ const DashboardComponent = (props) => {
                     </dl>
                   </div>
                 </Link>
-                <Link to={"assets"} className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg">
+                <Link
+                  to={"assets"}
+                  className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg"
+                >
                   <div className="px-4 py-5 sm:p-6">
                     <dl>
                       <dt className="text-sm leading-5 font-medium text-gray-500 truncate">
@@ -76,7 +81,10 @@ const DashboardComponent = (props) => {
                     </dl>
                   </div>
                 </Link>
-                <Link to={"beneficiaries"} className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg">
+                <Link
+                  to={"beneficiaries"}
+                  className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg"
+                >
                   <div className="px-4 py-5 sm:p-6">
                     <dl>
                       <dt className="text-sm leading-5 font-medium text-gray-500 truncate">
@@ -92,7 +100,10 @@ const DashboardComponent = (props) => {
                     </dl>
                   </div>
                 </Link>
-                <Link to={"executor"} className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg">
+                <Link
+                  to={"executor"}
+                  className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg"
+                >
                   <div className="px-4 py-5 sm:p-6">
                     <dl>
                       <dt className="text-sm leading-5 font-medium text-gray-500 truncate">
@@ -108,7 +119,10 @@ const DashboardComponent = (props) => {
                     </dl>
                   </div>
                 </Link>
-                <Link to={"asset_distribution"} className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg">
+                <Link
+                  to={"asset_distribution"}
+                  className="bg-white hover:bg-gray-50 overflow-hidden shadow rounded-lg"
+                >
                   <div className="px-4 py-5 sm:p-6">
                     <dl>
                       <dt className="text-sm leading-5 font-medium text-gray-500 truncate">

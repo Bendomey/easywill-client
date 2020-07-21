@@ -31,6 +31,8 @@ const MarriageComponent = ({ data, user }) => {
   const [spouseaddresscity, setCity] = useState(data?.spouseaddresscity || "");
   const [loading, setLoading] = useState(false);
 
+  console.log(data);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -55,7 +57,7 @@ const MarriageComponent = ({ data, user }) => {
         description: "Marriage Information updated successfully",
       });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       // toaster.warning("Error", {
       //   description: e.response.data.error,
       // });

@@ -134,6 +134,25 @@ const Layout = (props) => {
                     </svg>
                     FAQS
                   </Link>
+                  <Link
+                    to="/admin/blog"
+                    className="mt-1 group flex items-center px-2 py-2 text-base leading-6 font-medium rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition ease-in-out duration-150"
+                  >
+                    <svg
+                      className="mr-4 h-6 w-6 text-gray-400 group-hover:text-gray-300 group-focus:text-gray-300 transition ease-in-out duration-150"
+                      stroke="currentColor"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                      />
+                    </svg>
+                    Manage Blog
+                  </Link>
                 </nav>
               </div>
             </div>
@@ -177,7 +196,7 @@ const Layout = (props) => {
                 </Link>
                 <Link
                   to="/admin/members"
-                  className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-white ${
+                  className={`mt-2 group flex items-center px-2 py-2 text-sm leading-5 font-medium text-white ${
                     pathname === "/admin/members"
                       ? "rounded-md bg-gray-900"
                       : "hover:text-white hover:bg-gray-700"
@@ -200,7 +219,7 @@ const Layout = (props) => {
                 </Link>
                 <Link
                   to="/admin/faqs"
-                  className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-white ${
+                  className={`mt-2 group flex items-center px-2 py-2 text-sm leading-5 font-medium text-white ${
                     pathname === "/admin/faqs"
                       ? "rounded-md bg-gray-900"
                       : "hover:text-white hover:bg-gray-700"
@@ -219,7 +238,30 @@ const Layout = (props) => {
                       d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
                     />
                   </svg>
-                  FAQs
+                  Manage FAQs
+                </Link>
+                <Link
+                  to="/admin/blog"
+                  className={`mt-2 group flex items-center px-2 py-2 text-sm leading-5 font-medium text-white ${
+                    pathname === "/admin/blog"
+                      ? "rounded-md bg-gray-900"
+                      : "hover:text-white hover:bg-gray-700"
+                  }  focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150`}
+                >
+                  <svg
+                    className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300 group-focus:text-gray-300 transition ease-in-out duration-150"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                    />
+                  </svg>
+                  Manage Blog
                 </Link>
               </nav>
             </div>

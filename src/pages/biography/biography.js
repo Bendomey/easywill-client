@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import countries from "../../components/data/countries";
 import regions from "../../components/data/regions";
 import { toaster } from "evergreen-ui";
@@ -21,6 +21,28 @@ const BiographySingleComponent = ({ data, user }) => {
   const [region, setRegion] = useState(data?.addressstate || "");
   const [city, setCity] = useState(data?.addresscity || "");
   const [loading, setLoading] = useState(false);
+
+  console.log(data?.addresscity);
+
+  useEffect(() => {
+    if (data) {
+      setIDType(data?.idnumtype);
+      setIDNum(data?.idnum);
+      setTin(data?.tinnumber);
+      setFamilyName(data?.familyname);
+      setFirstName(data?.firstname);
+      setOtherName(data?.othername);
+      setGender(data?.gender);
+      setDob(data?.dateofbirth);
+      setBirthCountry(data?.birthcountry);
+      setBirthState(data?.birthstate);
+      setBirthCity(data?.birthcity);
+      setPhone(data?.phonenumber);
+      setCountry(data?.addresscountry);
+      setRegion(data?.addressstate);
+      setCity(data?.addresscity);
+    }
+  }, [data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
