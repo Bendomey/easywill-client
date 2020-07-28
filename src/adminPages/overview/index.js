@@ -10,7 +10,6 @@ const OverviewDashboard = (props) => {
     document.title = "Overview | Easy Will Dashboard";
     //fetch data
     axios("https://us-central1-samansiwill.cloudfunctions.net/members")
-      // axios("http://localhost:5001/samansiwill/us-central1/members")
       .then((res) => res.data)
       .then((members) => {
         setData(Object.values(members.data).length);
@@ -20,7 +19,6 @@ const OverviewDashboard = (props) => {
       });
 
     axios("https://us-central1-samansiwill.cloudfunctions.net/faqs")
-      // axios("http://localhost:5001/samansiwill/us-central1/faqs")
       .then((res) => res.data)
       .then((members) => {
         setFaqs(Object.values(members.data).length);
@@ -30,7 +28,6 @@ const OverviewDashboard = (props) => {
       });
 
     axios("https://us-central1-samansiwill.cloudfunctions.net/blogs")
-      // axios("http://localhost:5001/samansiwill/us-central1/blogs")
       .then((res) => res.data)
       .then((members) => {
         setAdmin(Object.values(members.data).length);

@@ -36,7 +36,6 @@ const ManageFaqs = () => {
       let filtered = matchSorter(holdFaq, search, {
         keys: ["question", "answer"],
       });
-      console.log(filtered);
       setFaqs(filtered);
     }
   }, [holdFaq, search]);

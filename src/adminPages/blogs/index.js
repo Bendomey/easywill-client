@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { toaster, SideSheet } from "evergreen-ui";
 import { storage } from "../../components/upload";
 import { v4 } from "uuid";
+import moment from "moment";
 import axios from "axios";
+import ViewBlog from "./view";
+import matchSorter from "match-sorter";
 
 const truncateWord = (text, truncate = null) => {
   let htmlFiltered = text.replace(/(<([^>]+)>)/gi, "");
@@ -17,7 +20,18 @@ const truncateWord = (text, truncate = null) => {
   return htmlFiltered;
 };
 
-const FAQS = (props) => {
+function snapshotToArray(snapshot) {
+  var returnArr = [];
+  Object.entries(snapshot).forEach(function ([key, snap], i) {
+    var item = snap;
+    item.key = key;
+
+    returnArr.push(item);
+  });
+  return returnArr;
+}
+
+const BLOGS = (props) => {
   useEffect(() => {
     document.title = "Manage Blog | Easy Will";
   });
@@ -29,15 +43,30 @@ const FAQS = (props) => {
   const [loading, setLoading] = useState(false);
 
   const [faqs, setFaqs] = useState(null);
+  const [faqsHold, setFaqsHold] = useState(null);
   const [loadFaqs, setLoadFaqs] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const [openPost, setOpenPost] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    if (faqsHold) {
+      let filtered = matchSorter(faqsHold, search, {
+        keys: ["title", "description"],
+      });
+      setFaqs(filtered);
+    }
+  }, [faqsHold, search]);
 
   const fetchFaqs = () => {
     axios("https://us-central1-samansiwill.cloudfunctions.net/blogs")
-      // axios("http://localhost:5001/samansiwill/us-central1/blogs")
       .then((res) => res.data)
       .then((result) => {
         setLoadFaqs(false);
-        setFaqs(result.data);
+        let a = snapshotToArray(result.data);
+        setFaqs(a);
+        setFaqsHold(a);
       })
       .catch((e) => {
         setLoadFaqs(false);
@@ -103,7 +132,6 @@ const FAQS = (props) => {
             axios({
               method: "POST",
               url: `https://us-central1-samansiwill.cloudfunctions.net/addBlogs`,
-              // url: `http://localhost:5001/samansiwill/us-central1/addBlogs`,
               headers: {
                 "Content-Type": "application/json",
               },
@@ -209,13 +237,13 @@ const FAQS = (props) => {
             </h2>
           </div>
           <div className="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
-            <span className="ml-3 shadow-sm rounded-md">
+            <span className="ml-3 shadow-sm rounded-none">
               <button
                 type="button"
                 onClick={() => setShow(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition duration-150 ease-in-out"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-none text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition duration-150 ease-in-out"
               >
-                Add News
+                Add Post
               </button>
             </span>
           </div>
@@ -239,48 +267,47 @@ const FAQS = (props) => {
         </div>
       )}
 
-      {!loadFaqs && faqs && Object.values(faqs).length !== 0 && (
+      {!loadFaqs && faqsHold && faqsHold.length !== 0 && (
         <div>
           <input
             id="text"
-            required={true}
+            onChange={(e) => setSearch(e.target.value)}
             className="form-input rounded-none block w-full sm:text-sm sm:leading-5"
             placeholder="Search by title or description ..."
           />
           <div className="flex flex-col mt-5">
             <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {Object.entries(faqs).map(([key, member], i) => {
-                return (
-                  <Fragment>
-                    <div class="col-span-1 max-w-sm rounded overflow-hidden shadow-lg">
-                      <img
-                        class="w-full h-40"
-                        src={member?.image}
-                        alt="Sunset in the mountains"
-                      />
-                      <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2 truncate">
-                          {truncateWord(member?.title)}
+              {faqs &&
+                faqs.map((post, i) => {
+                  return (
+                    <Fragment key={i}>
+                      <div
+                        onClick={() => {
+                          setData({
+                            id: post?.key,
+                            ...post,
+                          });
+                          setOpenPost(true);
+                        }}
+                        class="col-span-1 cursor-pointer max-w-sm rounded-none overflow-hidden shadow-sm border border-gray-300"
+                      >
+                        <img class="w-full h-48" src={post?.image} alt="blog" />
+                        <div class="px-6 py-2">
+                          <div class="font-bold text-lg truncate">
+                            {truncateWord(post?.title)}
+                          </div>
                         </div>
-                        <p class="text-gray-700 truncate">
-                          {truncateWord(member?.description)}
-                        </p>
+                        <div class="px-6 pb-2">
+                          <span className="text-indigo-500">
+                            {moment(new Date(post?.createdAt)).format(
+                              "Do MMMM YYYY hh:mm a"
+                            )}
+                          </span>
+                        </div>
                       </div>
-                      <div class="px-6 py-4">
-                        <span class="inline-block bg-blue-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">
-                          View
-                        </span>
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                          Edit
-                        </span>
-                        <span class="inline-block bg-red-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">
-                          Delete
-                        </span>
-                      </div>
-                    </div>
-                  </Fragment>
-                );
-              })}
+                    </Fragment>
+                  );
+                })}
             </ul>
           </div>
         </div>
@@ -288,7 +315,7 @@ const FAQS = (props) => {
 
       <SideSheet isShown={show} onCloseComplete={() => setShow(false)}>
         <Fragment>
-          <div className={"bg-gray-50 p-5"}>Add News</div>
+          <div className={"bg-gray-50 p-5"}>Add Post</div>
           <form onSubmit={handleSubmit} className={"p-5"}>
             <div className={"mb-3"}>
               <div className="flex-shrink-0 h-full w-full flex justify-around items-center flex-col">
@@ -354,8 +381,15 @@ const FAQS = (props) => {
           </form>
         </Fragment>
       </SideSheet>
+      <ViewBlog
+        show={openPost}
+        setShow={setOpenPost}
+        data={data}
+        fetchFaqs={fetchFaqs}
+        setLoadFaqs={setLoadFaqs}
+      />
     </Fragment>
   );
 };
 
-export default FAQS;
+export default BLOGS;
