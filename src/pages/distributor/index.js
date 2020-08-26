@@ -8,16 +8,17 @@ const DistributorComponent = (props) => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [user] = useState(localStorage.getItem("eaze-token"));
 
   const fetchDistributor = async () => {
-    console.log(JSON.parse(user).id);
     try {
       setLoading(true);
       let results = await post("/fetchUser", {
         id: JSON.parse(user).id,
       });
       setLoading(false);
+      setUserData(results?.data?.data);
       setData(results.data?.data?.distribution);
     } catch (e) {
       console.log(e);
@@ -32,6 +33,7 @@ const DistributorComponent = (props) => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
   return (
     <Fragment>
       <header className="bg-white shadow">
@@ -125,6 +127,7 @@ const DistributorComponent = (props) => {
               data={data && data}
               setData={setData}
               user={user && user}
+              userData={userData}
             />
           </div>
         </Fragment>
