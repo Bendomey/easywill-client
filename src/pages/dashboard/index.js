@@ -1,11 +1,33 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { post } from "../../components/auth/transport";
 import { Link } from "react-router-dom";
+import { usePaystackPayment } from 'react-paystack';
 
 const DashboardComponent = (props) => {
+  const initializePayment = usePaystackPayment({
+    reference: (new Date()).getTime(),
+    email: JSON.parse(localStorage.getItem("eaze-token"))?.email,
+    amount: 0.1 * 100,
+    publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+    currency: "GHS",
+    callback: async (response) => {
+      try {
+        console.log(response);
+        // await post("/addPaymentInformation", {
+        //   id: JSON.parse(user)?.id,
+        //   ref: response?.reference
+        // });
+        // console.log("e hit endpoint finii");
+        // await fetchData()
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  });
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [user] = useState(localStorage.getItem("eaze-token"));
+
 
   const fetchData = async () => {
     try {
@@ -34,9 +56,33 @@ const DashboardComponent = (props) => {
     <Fragment>
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900">
-            Dashboard
-          </h1>
+          <div class="md:flex md:items-center md:justify-between">
+            <div class="flex-1 min-w-0">
+              <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">
+                Dashboard
+              </h2>
+            </div>
+            <div class="mt-4 flex md:mt-0 md:ml-4">
+              {
+                loading
+                  ? "Loading..."
+                  : data?.payment
+                    ? (
+                      <span class="ml-3 shadow-sm rounded-md">
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700 transition duration-150 ease-in-out">
+                          Download Will
+                      </button>
+                      </span>)
+                    : (
+                      <span class="shadow-sm rounded-md">
+                        <button onClick={() => initializePayment()} type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out">
+                          Go Premium
+                      </button>
+                      </span>
+                    )
+              }
+            </div>
+          </div>
         </div>
       </header>
       <main>
@@ -57,8 +103,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.personalInformation
-                          ? "Done"
-                          : "Pending"}
+                            ? "Done"
+                            : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -76,8 +122,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.assets
-                          ? "Done"
-                          : "Pending"}
+                            ? "Done"
+                            : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -95,8 +141,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.beneficiaries
-                          ? "Done"
-                          : "Pending"}
+                            ? "Done"
+                            : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -114,8 +160,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.executor
-                          ? "Done"
-                          : "Pending"}
+                            ? "Done"
+                            : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -133,8 +179,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.distribution
-                          ? "Done"
-                          : "Pending"}
+                            ? "Done"
+                            : "Pending"}
                       </dd>
                     </dl>
                   </div>

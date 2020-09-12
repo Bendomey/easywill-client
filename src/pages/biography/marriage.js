@@ -31,7 +31,6 @@ const MarriageComponent = ({ data, user }) => {
   const [spouseaddresscity, setCity] = useState(data?.spouseaddresscity || "");
   const [loading, setLoading] = useState(false);
 
-  console.log(data);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -192,12 +191,12 @@ const MarriageComponent = ({ data, user }) => {
                   ))}
                 </select>
               ) : (
-                <input
-                  value={spousebirthstate}
-                  onChange={(e) => setBirthState(e.target.value)}
-                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                />
-              )}
+                  <input
+                    value={spousebirthstate}
+                    onChange={(e) => setBirthState(e.target.value)}
+                    className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  />
+                )}
             </div>
           </div>
           <div className="sm:col-span-3">
@@ -274,12 +273,12 @@ const MarriageComponent = ({ data, user }) => {
                   ))}
                 </select>
               ) : (
-                <input
-                  value={spouseaddressstate}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                />
-              )}
+                  <input
+                    value={spouseaddressstate}
+                    onChange={(e) => setRegion(e.target.value)}
+                    className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  />
+                )}
             </div>
           </div>
           <div className="sm:col-span-3">

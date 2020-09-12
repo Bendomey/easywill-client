@@ -48,11 +48,13 @@ const LoginComponent = (props) => {
       toaster.success("Hurray", {
         description: "You logged in successfully",
       });
-      setLoading(false);
     } catch (e) {
+
       toaster.warning("Error", {
         description: e.message,
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (
