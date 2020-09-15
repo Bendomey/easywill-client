@@ -24,6 +24,7 @@ const DistributorComponent = (props) => {
       console.log(e);
     }
   };
+  // console.log(userData);
 
   useEffect(() => {
     (async () => {

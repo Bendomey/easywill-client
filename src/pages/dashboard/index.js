@@ -1,33 +1,33 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { post } from "../../components/auth/transport";
 import { Link } from "react-router-dom";
-import { usePaystackPayment } from 'react-paystack';
+import { usePaystackPayment } from "react-paystack";
 
 const DashboardComponent = (props) => {
   const initializePayment = usePaystackPayment({
-    reference: (new Date()).getTime(),
+    reference: JSON.parse(localStorage.getItem("eaze-token"))?.id,
+    ref: JSON.parse(localStorage.getItem("eaze-token"))?.id,
     email: JSON.parse(localStorage.getItem("eaze-token"))?.email,
-    amount: 0.1 * 100,
+    amount: 0.01 * 100,
     publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
     currency: "GHS",
-    callback: async (response) => {
+    callback: async function (response) {
       try {
-        console.log(response);
+        console.log(response.reference);
         // await post("/addPaymentInformation", {
         //   id: JSON.parse(user)?.id,
-        //   ref: response?.reference
+        //   ref: response?.reference,
         // });
         // console.log("e hit endpoint finii");
-        // await fetchData()
+        // await fetchData();
       } catch (error) {
         console.log(error);
       }
-    }
+    },
   });
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [user] = useState(localStorage.getItem("eaze-token"));
-
 
   const fetchData = async () => {
     try {
@@ -41,6 +41,7 @@ const DashboardComponent = (props) => {
       console.log(e);
     }
   };
+
   useEffect(() => {
     document.title = "Welcome - Easywill";
     (async () => {
@@ -63,24 +64,28 @@ const DashboardComponent = (props) => {
               </h2>
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
-              {
-                loading
-                  ? "Loading..."
-                  : data?.payment
-                    ? (
-                      <span class="ml-3 shadow-sm rounded-md">
-                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700 transition duration-150 ease-in-out">
-                          Download Will
-                      </button>
-                      </span>)
-                    : (
-                      <span class="shadow-sm rounded-md">
-                        <button onClick={() => initializePayment()} type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out">
-                          Go Premium
-                      </button>
-                      </span>
-                    )
-              }
+              {loading ? (
+                "Loading..."
+              ) : data?.payment ? (
+                <span class="ml-3 shadow-sm rounded-md">
+                  <button
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700 transition duration-150 ease-in-out"
+                  >
+                    Download Will
+                  </button>
+                </span>
+              ) : (
+                <span class="shadow-sm rounded-md">
+                  <button
+                    onClick={() => initializePayment()}
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out"
+                  >
+                    Go Premium
+                  </button>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -103,8 +108,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.personalInformation
-                            ? "Done"
-                            : "Pending"}
+                          ? "Done"
+                          : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -122,8 +127,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.assets
-                            ? "Done"
-                            : "Pending"}
+                          ? "Done"
+                          : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -141,8 +146,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.beneficiaries
-                            ? "Done"
-                            : "Pending"}
+                          ? "Done"
+                          : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -160,8 +165,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.executor
-                            ? "Done"
-                            : "Pending"}
+                          ? "Done"
+                          : "Pending"}
                       </dd>
                     </dl>
                   </div>
@@ -179,8 +184,8 @@ const DashboardComponent = (props) => {
                         {loading
                           ? "Loading..."
                           : data?.distribution
-                            ? "Done"
-                            : "Pending"}
+                          ? "Done"
+                          : "Pending"}
                       </dd>
                     </dl>
                   </div>
