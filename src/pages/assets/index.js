@@ -50,6 +50,7 @@ const AssetsComponent = (props) => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Fragment>
       <header className="bg-white shadow">

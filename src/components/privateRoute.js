@@ -6,7 +6,11 @@ const privateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        if (!localStorage.getItem("eaze-token")) {
+        if (
+          !localStorage.getItem("eaze-token") ||
+          localStorage.getItem("eaze-token") === undefined
+        ) {
+          localStorage.clear("eaze-token");
           return <Redirect to={{ pathname: "/login" }} />;
         }
         return <Component />;

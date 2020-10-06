@@ -43,10 +43,11 @@ const RegisterComponent = (props) => {
       });
       setLoading(false);
     } catch (e) {
-      console.log(e);
       toaster.warning("Error", {
-        description: e.message,
+        description: e?.response?.data?.error,
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (

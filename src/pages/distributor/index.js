@@ -4,6 +4,20 @@ import { SideSheet, Spinner } from "evergreen-ui";
 // import AddBeneficiaryComponent from "../beneficiary/add";
 import AddDistributor from "./add";
 
+const accceptedData = [
+  "familyname",
+  "firstname",
+  "type",
+  "form",
+  "location",
+  "make",
+  "name",
+  "policy",
+  "accountNumber",
+  "model",
+  "condition",
+];
+
 const DistributorComponent = (props) => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
@@ -19,12 +33,28 @@ const DistributorComponent = (props) => {
       });
       setLoading(false);
       setUserData(results?.data?.data);
-      setData(results.data?.data?.distribution);
+      if (results.data?.data?.distribution) {
+        let newData = [];
+        Object.entries(results?.data?.data?.distribution).map(
+          ([key, value]) => {
+            newData.push({
+              ...Object.entries(results?.data?.data?.assets).find(
+                ([newKey, newValue], i) => newKey === value.asset
+              )[1],
+              ...Object.entries(results?.data?.data?.beneficiaries).find(
+                ([newKey, newValue], i) => newKey === value.beneficiary
+              )[1],
+              condition: value.condition,
+            });
+          }
+        );
+        setData(newData);
+      } else setData([]);
+      // setData(results.data?.data?.distribution);
     } catch (e) {
       console.log(e);
     }
   };
-  // console.log(userData);
 
   useEffect(() => {
     (async () => {
@@ -88,7 +118,53 @@ const DistributorComponent = (props) => {
                   </div>
                 </Fragment>
               ) : (
-                <Fragment>vkbv</Fragment>
+                <Fragment>
+                  <div className="mt-6 grid grid-cols-1 mx-3 row-gap-6 col-gap-4 sm:grid-cols-6">
+                    {data.map((d, i) => (
+                      <Fragment key={i}>
+                        <div key={i} className="sm:col-span-6">
+                          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                            <div className="px-4 py-5 border-b border-gray-200 sm:px-6">
+                              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                {/* {header(key, value)} */}
+                              </h3>
+                              <p className="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
+                                Distributed Asset Details
+                              </p>
+                            </div>
+                            <div>
+                              <dl>
+                                {Object.entries(d).map(
+                                  ([newKey, newValue], j) => {
+                                    if (accceptedData.includes(newKey))
+                                      return (
+                                        <Fragment key={j}>
+                                          <div
+                                            className={`${
+                                              j % 2 === 0
+                                                ? "bg-gray-50"
+                                                : "bg-white"
+                                            } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
+                                          >
+                                            <dt className="text-sm leading-5 font-medium text-gray-500">
+                                              {newKey}
+                                            </dt>
+                                            <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                              {newValue}
+                                            </dd>
+                                          </div>
+                                        </Fragment>
+                                      );
+                                  }
+                                )}
+                              </dl>
+                            </div>
+                          </div>
+                        </div>
+                      </Fragment>
+                    ))}
+                  </div>
+                </Fragment>
               )}
             </Fragment>
           )}
@@ -129,6 +205,7 @@ const DistributorComponent = (props) => {
               setData={setData}
               user={user && user}
               userData={userData}
+              setShow={setShow}
             />
           </div>
         </Fragment>

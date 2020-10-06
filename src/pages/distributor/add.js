@@ -2,25 +2,52 @@ import React, { Fragment, useState } from "react";
 import { post } from "../../components/auth/transport";
 import { toaster } from "evergreen-ui";
 
-const AddDistributor = ({ user, fetch, data, setData }) => {
+const getCaption = (data) => {
+  let a = "";
+  switch (data.typeOfAsset) {
+    case "metal":
+      a = data?.type + " - " + data.typeOfAsset;
+      break;
+    case "land":
+      a = data?.type + " - " + data.typeOfAsset;
+      break;
+    case "automobile":
+      a = data?.make + " - " + data.typeOfAsset;
+      break;
+    case "insurance":
+      a = data?.name + " - " + data.typeOfAsset;
+      break;
+    case "bank":
+      a = data?.accountType + " - " + data.typeOfAsset;
+      break;
+    default:
+      break;
+  }
+  return a;
+};
+
+const AddDistributor = ({ user, fetch, data, setData, userData, setShow }) => {
   const [loading, setLoading] = useState(false);
+  const [asset, setAsset] = useState("");
+  const [beneficiary, setBeneficiary] = useState("");
+  const [condition, setCondition] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      let results = await post("/addDistributor", {
+      let results = await post("/addDistributionInformation", {
         id: JSON.parse(user).id,
+        asset,
+        beneficiary,
+        condition,
       });
       setLoading(false);
-      await fetch();
       toaster.success("Hurray", {
         description: "Distribution added successfully",
       });
-      setData({
-        ...data,
-        [results?.data?.data.id]: results?.data?.data,
-      });
+      await fetch();
+      setShow(false);
     } catch (e) {
       toaster.warning("Error", {
         description: e.response.data.error,
@@ -41,10 +68,26 @@ const AddDistributor = ({ user, fetch, data, setData }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
+                value={asset}
+                onChange={(e) => setAsset(e.target.value)}
+                required={true}
                 id="country"
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
-                <option value={""}>Please select</option>
+                {userData?.assets === null || userData?.assets === undefined ? (
+                  <option value={""}>No assets found</option>
+                ) : (
+                  <Fragment>
+                    <option value={""}>Please select</option>
+                    {Object.entries(userData?.assets).map(([key, value], i) => {
+                      return (
+                        <option key={i} value={key}>
+                          {getCaption(value)}
+                        </option>
+                      );
+                    })}
+                  </Fragment>
+                )}
               </select>
             </div>
           </div>
@@ -57,10 +100,29 @@ const AddDistributor = ({ user, fetch, data, setData }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
+                value={beneficiary}
+                onChange={(e) => setBeneficiary(e.target.value)}
+                required={true}
                 id="country"
                 className="form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               >
-                <option value={""}>Please select</option>
+                {userData?.beneficiaries === null ||
+                userData?.beneficiaries === undefined ? (
+                  <option value={""}>No beneficiaries found</option>
+                ) : (
+                  <Fragment>
+                    <option value={""}>Please select</option>
+                    {Object.entries(userData?.beneficiaries).map(
+                      ([key, value], i) => {
+                        return (
+                          <option key={i} value={key}>
+                            {value?.familyname} {value?.firstname}
+                          </option>
+                        );
+                      }
+                    )}
+                  </Fragment>
+                )}
               </select>
             </div>
           </div>
@@ -73,6 +135,8 @@ const AddDistributor = ({ user, fetch, data, setData }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <textarea
+                value={condition}
+                onChange={(e) => setCondition(e.target.value)}
                 rows={5}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               ></textarea>

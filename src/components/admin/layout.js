@@ -26,7 +26,6 @@ const Layout = (props) => {
   const { pathname } = useLocation();
   const { push } = useHistory();
   const [logout, setLogout] = useState(false);
-  console.log(pathname);
   const [user, setUser] = useState(null);
 
   const logoutController = () => {
@@ -334,7 +333,7 @@ const Layout = (props) => {
                 </div>
               </div>
               <div className="ml-4 flex items-center md:ml-6">
-                <button
+                {/* <button
                   className="p-1 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:shadow-outline focus:text-gray-500"
                   aria-label="Notifications"
                 >
@@ -351,8 +350,8 @@ const Layout = (props) => {
                       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                     />
                   </svg>
-                </button>
-                <div className="ml-3 relative">
+                </button> */}
+                {/* <div className="ml-3 relative">
                   <div>
                     <button
                       className="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:shadow-outline"
@@ -368,7 +367,7 @@ const Layout = (props) => {
                       />
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -19,6 +19,7 @@ const InsuranceComponent = ({ data, user, fetch, show }) => {
         insuranceCompany,
         policy,
         valueOfPolicy,
+        typeOfAsset: "insurance",
       });
       setLoading(false);
       await fetch();

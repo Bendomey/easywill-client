@@ -28,12 +28,14 @@ const AutomobileComponent = ({ data, user, fetch, show, setData }) => {
         year,
         color,
         chasisNumber,
+        typeOfAsset: "automobile",
       });
       setLoading(false);
-      console.log({
-        ...data,
-        [results?.data?.data.id]: results?.data?.data,
-      })
+
+      // console.log({
+      //   ...data,
+      //   [results?.data?.data.id]: results?.data?.data,
+      // });
       // setData({
       //   ...data,
       //   [results?.data?.data.id]: results?.data?.data,

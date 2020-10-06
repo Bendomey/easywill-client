@@ -17,12 +17,12 @@ const LoginComponent = (props) => {
   const submitLoading = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (email === "admin@easywill.com" && password === "easywill-admin") {
+    if (email === "admin@ezwill.com" && password === "ezwill-admin") {
       localStorage.setItem(
         "eaze-token-admin",
         JSON.stringify({
-          name: "Easy Will Admin",
-          email: "admin@easywill.com",
+          name: "Ezwill Admin",
+          email: "admin@ezwill.com",
         })
       );
       push("/admin");
@@ -49,7 +49,6 @@ const LoginComponent = (props) => {
         description: "You logged in successfully",
       });
     } catch (e) {
-
       toaster.warning("Error", {
         description: e.message,
       });

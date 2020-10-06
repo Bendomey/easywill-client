@@ -21,6 +21,7 @@ const LandComponent = ({ data, user, fetch, show }) => {
         term,
         location,
         description,
+        typeOfAsset: "land",
       });
       setLoading(false);
       await fetch();

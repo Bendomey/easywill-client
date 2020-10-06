@@ -21,6 +21,7 @@ const BankComponent = ({ data, user, fetch, show }) => {
         accountNumber,
         accountType,
         branch,
+        typeOfAsset: "bank",
       });
       setLoading(false);
       await fetch();

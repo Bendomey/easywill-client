@@ -23,6 +23,7 @@ const MetalComponent = ({ data, user, fetch, show }) => {
         karat,
         location,
         otherInformation,
+        typeOfAsset: "metal",
       });
       setLoading(false);
       await fetch();
