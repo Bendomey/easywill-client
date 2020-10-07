@@ -2,30 +2,18 @@ import React, { Fragment, useEffect, useState } from "react";
 import { post } from "../../components/auth/transport";
 import { Link } from "react-router-dom";
 import { usePaystackPayment } from "react-paystack";
+import { toaster } from "evergreen-ui";
 
 const DashboardComponent = (props) => {
   const initializePayment = usePaystackPayment({
     reference: JSON.parse(localStorage.getItem("eaze-token"))?.id,
-    ref: JSON.parse(localStorage.getItem("eaze-token"))?.id,
     email: JSON.parse(localStorage.getItem("eaze-token"))?.email,
     amount: 0.01 * 100,
     publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
     currency: "GHS",
-    callback: async function (response) {
-      try {
-        console.log(response.reference);
-        // await post("/addPaymentInformation", {
-        //   id: JSON.parse(user)?.id,
-        //   ref: response?.reference,
-        // });
-        // console.log("e hit endpoint finii");
-        // await fetchData();
-      } catch (error) {
-        console.log(error);
-      }
-    },
   });
   const [data, setData] = useState(null);
+  const [transact, setTransact] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user] = useState(localStorage.getItem("eaze-token"));
 
@@ -42,8 +30,19 @@ const DashboardComponent = (props) => {
     }
   };
 
+  // you can call this function anything
+  const onClose = () => {
+    // fetchData()
+    //   .then()
+    //   .catch((e) => {
+    //     toaster.warning("Something happened", {
+    //       description: "Hello world",
+    //     });
+    //   });
+  };
+  console.log(data);
   useEffect(() => {
-    document.title = "Welcome - Easywill";
+    document.title = "Welcome - Ezwill";
     (async () => {
       if (user) {
         setLoading(true);
@@ -53,6 +52,18 @@ const DashboardComponent = (props) => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (transact === true) {
+        setLoading(true);
+        await fetchData();
+        setLoading(false);
+        setTransact(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transact]);
   return (
     <Fragment>
       <header className="bg-white shadow">
@@ -66,7 +77,7 @@ const DashboardComponent = (props) => {
             <div class="mt-4 flex md:mt-0 md:ml-4">
               {loading ? (
                 "Loading..."
-              ) : data?.payment ? (
+              ) : data?.paymentInformation ? (
                 <span class="ml-3 shadow-sm rounded-md">
                   <button
                     type="button"
@@ -78,7 +89,11 @@ const DashboardComponent = (props) => {
               ) : (
                 <span class="shadow-sm rounded-md">
                   <button
-                    onClick={() => initializePayment()}
+                    onClick={() =>
+                      initializePayment(() => {
+                        setTransact(true);
+                      }, onClose)
+                    }
                     type="button"
                     class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out"
                   >
