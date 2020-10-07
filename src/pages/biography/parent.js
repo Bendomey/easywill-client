@@ -213,6 +213,7 @@ const ParentComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
+                type={"number"}
                 id="last_name"
                 value={fatherphonenumber}
                 onChange={(e) => setPhone(e.target.value)}
@@ -356,6 +357,7 @@ const ParentComponent = ({ data, user }) => {
             <div className="mt-1 rounded-md shadow-sm">
               <input
                 id="last_name"
+                type={"number"}
                 value={motherphonenumber}
                 onChange={(e) => setMotherPhone(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"

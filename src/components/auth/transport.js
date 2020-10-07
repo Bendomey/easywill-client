@@ -1,8 +1,8 @@
 import axios from "axios";
 import { toaster } from "evergreen-ui";
 
-axios.defaults.baseURL = "https://us-central1-samansiwill.cloudfunctions.net";
-// axios.defaults.baseURL = "http://localhost:5001/samansiwill/us-central1"; //
+// axios.defaults.baseURL = "https://us-central1-samansiwill.cloudfunctions.net";
+axios.defaults.baseURL = "http://localhost:5001/samansiwill/us-central1"; //
 
 const config = {
   headers: {},
@@ -47,10 +47,10 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export const post = (route, payload) =>
+export const post = (route, payload, options) =>
   new Promise(function (resolve, reject) {
     axios
-      .post(route, payload)
+      .post(route, payload, options)
       .then((res) => resolve(res))
       .catch((err) => reject(err));
   });

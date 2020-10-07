@@ -44,7 +44,7 @@ const DistributorComponent = (props) => {
               ...Object.entries(results?.data?.data?.beneficiaries).find(
                 ([newKey, newValue], i) => newKey === value.beneficiary
               )[1],
-              condition: value.condition,
+              condition: value.condition || "Not Specified",
             });
           }
         );

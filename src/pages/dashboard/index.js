@@ -3,6 +3,7 @@ import { post } from "../../components/auth/transport";
 import { Link } from "react-router-dom";
 import { usePaystackPayment } from "react-paystack";
 import { toaster } from "evergreen-ui";
+import download from "downloadjs";
 
 const DashboardComponent = (props) => {
   const initializePayment = usePaystackPayment({
@@ -15,6 +16,7 @@ const DashboardComponent = (props) => {
   const [data, setData] = useState(null);
   const [transact, setTransact] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [generatePDFLoad, setDeneratePDFLoad] = useState(false);
   const [user] = useState(localStorage.getItem("eaze-token"));
 
   const fetchData = async () => {
@@ -31,16 +33,28 @@ const DashboardComponent = (props) => {
   };
 
   // you can call this function anything
-  const onClose = () => {
-    // fetchData()
-    //   .then()
-    //   .catch((e) => {
-    //     toaster.warning("Something happened", {
-    //       description: "Hello world",
-    //     });
-    //   });
+  const onClose = () => {};
+
+  const generate = async () => {
+    if (data) {
+      setDeneratePDFLoad(true);
+      let results = await post(
+        "/generateWill",
+        {
+          id: JSON.parse(user).id,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      download(results.data, "will.pdf", "application/pdf");
+      setDeneratePDFLoad(false);
+      return;
+    } else
+      return toaster.warning("Something happened", {
+        description: "Users information is not set. Please wait...",
+      });
   };
-  console.log(data);
   useEffect(() => {
     document.title = "Welcome - Ezwill";
     (async () => {
@@ -80,10 +94,12 @@ const DashboardComponent = (props) => {
               ) : data?.paymentInformation ? (
                 <span class="ml-3 shadow-sm rounded-md">
                   <button
+                    onClick={generate}
+                    disabled={generatePDFLoad}
                     type="button"
                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-700 active:bg-blue-700 transition duration-150 ease-in-out"
                   >
-                    Download Will
+                    {generatePDFLoad ? "Generating will..." : "Download Will"}
                   </button>
                 </span>
               ) : (

@@ -165,7 +165,7 @@ const AddBeneficiaryComponent = ({ user, fetch, show, data, setData }) => {
                 value={phonenumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 required={true}
-                type={"text"}
+                type={"number"}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
               />
             </div>

@@ -31,7 +31,6 @@ const MarriageComponent = ({ data, user }) => {
   const [spouseaddresscity, setCity] = useState(data?.spouseaddresscity || "");
   const [loading, setLoading] = useState(false);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -191,12 +190,12 @@ const MarriageComponent = ({ data, user }) => {
                   ))}
                 </select>
               ) : (
-                  <input
-                    value={spousebirthstate}
-                    onChange={(e) => setBirthState(e.target.value)}
-                    className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                  />
-                )}
+                <input
+                  value={spousebirthstate}
+                  onChange={(e) => setBirthState(e.target.value)}
+                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                />
+              )}
             </div>
           </div>
           <div className="sm:col-span-3">
@@ -223,6 +222,7 @@ const MarriageComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
+                type={"number"}
                 value={spousephonenumber}
                 onChange={(e) => setPhone(e.target.value)}
                 className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
@@ -234,7 +234,7 @@ const MarriageComponent = ({ data, user }) => {
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Country
+              Country (Address)
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <select
@@ -256,7 +256,7 @@ const MarriageComponent = ({ data, user }) => {
               htmlFor="country"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              Region
+              Region (Address)
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               {spouseaddresscountry === "Ghana" ? (
@@ -273,12 +273,12 @@ const MarriageComponent = ({ data, user }) => {
                   ))}
                 </select>
               ) : (
-                  <input
-                    value={spouseaddressstate}
-                    onChange={(e) => setRegion(e.target.value)}
-                    className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                  />
-                )}
+                <input
+                  value={spouseaddressstate}
+                  onChange={(e) => setRegion(e.target.value)}
+                  className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                />
+              )}
             </div>
           </div>
           <div className="sm:col-span-3">
@@ -286,7 +286,7 @@ const MarriageComponent = ({ data, user }) => {
               htmlFor="last_name"
               className="block text-sm font-medium leading-5 text-gray-700"
             >
-              City
+              City (Address)
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input

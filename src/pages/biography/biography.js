@@ -296,6 +296,7 @@ const BiographySingleComponent = ({ data, user }) => {
             </label>
             <div className="mt-1 rounded-md shadow-sm">
               <input
+                type={"number"}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required={true}
